@@ -1,0 +1,121 @@
+import os
+import inspect
+import json
+import boto3
+from fastapi.openapi.utils import get_openapi
+
+
+def get_current_version():
+    frame = inspect.stack()[1]
+    caller_file = frame.filename
+    folder = os.path.basename(os.path.dirname(os.path.abspath(caller_file)))
+    version = folder.split("v")[1]
+    return version
+
+
+def get_versions():
+    versions_path = "./src/api/versions"
+    versions = [
+        d
+        for d in os.listdir(versions_path)
+        if os.path.isdir(os.path.join(versions_path, d)) and d != "__pycache__"
+    ]
+    versions.sort()
+    return [
+        {
+            "version": d,
+            "path": os.path.join(versions_path, d),
+            "openapi_path_terraform": os.path.join(
+                versions_path, d, f"openapi-{d}-terraform.json"
+            ),
+            "openapi_path_swagger": os.path.join(
+                versions_path, d, f"openapi-{d}-swagger.json"
+            ),
+        }
+        for d in versions
+    ]
+
+
+def get_versions_list():
+    versions = get_versions()
+    return [v["version"] for v in versions]
+
+
+def load_api_urls():
+    with open(".infra/terraform/outputs.json", "r") as f:
+        outputs = json.load(f)
+        return {
+            "api_urls": outputs["api_gateway_urls"]["value"],
+            "cognito_url": outputs["cognito_user_pool_domain_url"]["value"],
+            "s3_bucket": outputs["website_bucket_name"]["value"],
+            "aws_region": outputs["aws_region"]["value"],
+        }
+
+
+def set_servers_urls_to_openapi_schema(version, openapi_schema, urls):
+    if version not in urls:
+        raise ValueError(f"Version {version} not found in urls")
+    openapi_schema["servers"] = [{"url": urls[version]}]
+    return openapi_schema
+
+
+def set_token_url_to_openapi_schema(openapi_schema, token_url):
+    # Création de la structure avec setdefault() de manière chaînée
+    openapi_schema.setdefault("components", {}).setdefault(
+        "securitySchemes", {}
+    ).setdefault("Oauth2ClientCredentials", {}).setdefault("flows", {}).setdefault(
+        "clientCredentials", {}
+    )[
+        "tokenUrl"
+    ] = token_url
+
+    return openapi_schema
+
+
+def set_urls_to_openapi_file(version, openapi_schema, urls):
+    openapi_schema = set_servers_urls_to_openapi_schema(
+        version, openapi_schema, urls["api_urls"]
+    )
+    return openapi_schema
+
+
+def upload_openapi_schema(version, openapi_schema, bucket, aws_region):
+    s3_key = f"openapi-{version}.json"
+    s3 = boto3.client("s3")
+    url = f"http://{bucket}.s3.{aws_region}.amazonaws.com/{s3_key}"
+    try:
+        s3.put_object(Bucket=bucket, Key=s3_key, Body=json.dumps(openapi_schema))
+        return url
+    except Exception as e:
+        print(f"Error uploading file to S3: {str(e)}")
+        raise e
+
+
+def delete_all_openapi_schemas(bucket):
+    s3 = boto3.client("s3")
+    response = s3.list_objects_v2(Bucket=bucket, Prefix="openapi-")
+    if "Contents" in response:
+        for obj in response["Contents"]:
+            s3.delete_object(Bucket=bucket, Key=obj["Key"])
+    else:
+        print("No openapi schemas found in S3")
+
+
+def get_openapi_wrapper(include_hidden=False):
+    get_openapi()
+    pass
+
+
+def load_terraform_outputs():
+    with open(f".infra/terraform/{os.environ['STAGE']}-outputs.json", "r") as f:
+        outputs = json.load(f)
+        return {
+            "api_urls": outputs["api_gateway_urls"]["value"],
+            "cognito_url": outputs["cognito_user_pool_domain_url"]["value"],
+            "s3_bucket": outputs["api_documentation_bucket_name"]["value"],
+            "aws_region": outputs["aws_region"]["value"],
+        }
+
+
+if __name__ == "__main__":
+    print(get_versions_list())

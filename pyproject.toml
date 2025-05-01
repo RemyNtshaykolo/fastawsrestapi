@@ -1,0 +1,58 @@
+[project]
+name = "fast-rest-api"
+version = "0.1.0"
+description = "Deploy your aws rest api in minutes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.37.9",
+    "fastapi>=0.115.11",
+    "mangum>=0.19.0",
+    "pandas>=2.2.3",
+    "pyjwt>=2.10.1",
+    "requests>=2.32.3",
+    "toml>=0.10.2",
+]
+
+[dependency-groups]
+dev = ["toml>=0.10.2", "uvicorn>=0.34.0", "rich>=14.0.0"]
+
+########################
+# AWS ACCOUNTS
+########################
+[tool.infrastructure.aws_accounts.dev]
+aws_account = "408566731358"
+live = false
+profile = "fast-rest-api"
+
+[tool.infrastructure]
+aws_region = "eu-west-3"
+domain_name = "fastrestapi.com"
+oauth2_clients = ["test-ouath2-client"]
+
+########################
+# API INFORMATION
+########################
+[tool.infrastructure.api.networking]
+subdomain = "api"
+doc_subdomain = "doc.api"
+use_custom_domain = false
+
+[tool.infrastructure.api.information]
+title = "Fast REST API" # If "" is set, no title will be added to the api documentation
+terms_of_service = "https://fastrestapi.com/terms-of-service" # If "" is set, no terms of service will be added to the api documentation
+
+[tool.infrastructure.api.information.license]
+name = "MIT" # If "" is set, no license name will be added to the api documentation
+url = "https://opensource.org/licenses/MIT" # If "" is set, no license url will be added to the api documentation
+
+[tool.infrastructure.api.information.contact]
+name = "Fast Rest Api" # If "" is set, no contact name will be added to the api documentation
+url = "https://fastrestapi.com" # If "" is set, no contact url will be added to the api documentation
+email = "contact@fastrestapi.com" # If "" is set, no contact email will be added to the api documentation
+
+[tool.infrastructure.usage_plans.basic]
+limit = 10000
+offset = 0
+period = "MONTH"
+api_keys = ["client_a", "client_b"]

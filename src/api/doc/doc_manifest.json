@@ -1,0 +1,10 @@
+[
+  {
+    "url": "http://dev.fast-rest-api.1pmqv7.s3.eu-west-3.amazonaws.com/openapi-v1.json",
+    "name": "v1"
+  },
+  {
+    "url": "http://dev.fast-rest-api.1pmqv7.s3.eu-west-3.amazonaws.com/openapi-v2.json",
+    "name": "v2"
+  }
+]
