@@ -37,9 +37,10 @@ For non-live environments, such as dev:
 For live environments:
 `doc.api.fastapi.com`
 
+### Deploy
+
 - Create the ECR repository:
   `make tf-ecr-dev`
-
 - Build and push the lambda docker image on the ECR
 - Apply terraform
 - Build and push documentation
