@@ -1,6 +1,6 @@
 ## Welcome
 
-Welcome to the Fast REST API. The purpose of this repository is to enable you to easily deploy your FastAPI on Amazon's API Gateway REST service and leverage its features such as throttling, burst, caching, and authentication with API key or OAuth2.
+Welcome to the Fast REST API. The purpose of this repository is to enable you to easily deploy your FastAPI on Amazon's API Gateway REST service and leverage its features such as throttling, burst, caching, and authentication with API key or OAuth2 and to provide a branded swagger documentation
 
 ## Prerequisites
 
@@ -13,6 +13,11 @@ Welcome to the Fast REST API. The purpose of this repository is to enable you to
 ## Launching Your First API in Less Than 5 Minutes
 
 First, with `make help`, you will get a list of all available commands. All the make commands are parameterized as `command-stage_name`.
+
+### Set up your documentation logo
+
+- src/api/doc/icon.png : favicon
+- src/api/doc/logo.png : Navbar icon
 
 ### Set Up Your AWS Account
 
