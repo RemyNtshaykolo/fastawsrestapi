@@ -2,11 +2,11 @@
 resource "aws_lambda_function" "shared" {
   image_uri        = "${var.ecr_repository_url}@${var.lambda_image_digest}"
   source_code_hash = split("sha256:", var.lambda_image_id)[1]
-  description      = "Lambda partagée pour les routes standard - ${var.api_version}"
+  description      = "Shared lambda for the standard routes - ${var.api_version}"
   package_type     = "Image"
   function_name    = "${local.lambda-prefix}-shared"
   timeout          = 30
-  memory_size      = 1000
+  memory_size      = 128
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
@@ -30,7 +30,7 @@ resource "aws_lambda_function" "dedicated" {
 
   image_uri        = "${var.ecr_repository_url}@${var.lambda_image_digest}"
   source_code_hash = split("sha256:", var.lambda_image_id)[1]
-  description      = "Lambda dédiée pour la route ${each.key} - ${var.api_version}"
+  description      = "Dedicated lambda for the route ${each.key} - ${var.api_version}"
   package_type     = "Image"
   function_name    = "${local.lambda-prefix}-${replace(replace(each.key, ":", "-"), "/", "-")}"
   timeout          = each.value.timeout

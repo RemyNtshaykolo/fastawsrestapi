@@ -20,21 +20,6 @@ increase-lambda-quota-%: # 🚀 Increasing Lambda Quota
 	@echo "========================================\n"
 	@source ./scripts/set-env.sh $* && ./scripts/increase-lambda-quota.sh
 
-lambda-%: # 🌐 Open AWS Lambda console URL in the default browser
-	@source ./scripts/set-env.sh $* &&  uv run ./scripts/open-aws.py $* lambda
-
-apigateway-%: # 🌐 Open AWS API Gateway console URL in the default browser
-	@source ./scripts/set-env.sh $* &&  uv run ./scripts/open-aws.py $* apigateway
-
-s3-%: # 🌐 Open AWS S3 console URL in the default browser
-	@source ./scripts/set-env.sh $* &&  uv run ./scripts/open-aws.py $* s3
-
-acm-%: # 🌐 Open AWS ACM console URL in the default browser
-	@source ./scripts/set-env.sh $* &&  uv run ./scripts/open-aws.py $* acm
-
-cloudfront-%: # 🌐 Open AWS CloudFront console URL in the default browser
-	@source ./scripts/set-env.sh $* &&  uv run ./scripts/open-aws.py $* cloudfront
-
 ## LAMBDA
 build-push-lambda-image-%: # 🐳 Build and push lambda image to ECR 
 	@echo "\n========================================"
@@ -64,6 +49,8 @@ tf-apply-%: # 🚀 Apply Terraform changes
 	@echo "🚀 APPLYING TERRAFORM CHANGES"
 	@echo "========================================\n"
 	@source ./scripts/set-env.sh $* && ./scripts/tf-action.sh $* apply
+
+
 
 
 tf-destroy-%: # 🗑️ Destroy Terraform resources
@@ -132,6 +119,7 @@ deploy-%: # ✨ Build lambda image, deploy api and host documentation on s3
 	@echo "🚀 STARTING DEPLOYMENT"
 	@echo "========================================\n"
 	@make build-push-lambda-image-$*
+	@make generate-openapi-files-$*
 	@make tf-apply-$*
 	@make doc-$*
 
@@ -140,4 +128,5 @@ info-%: # 📚 Display links from STAGE-output.json file
 	@echo "📚 DISPLAYING LINKS FROM STAGE-output.json FILE"
 	@echo "========================================\n"
 	@source ./scripts/set-env.sh $* && uv run ./scripts/info.py $*
+
 

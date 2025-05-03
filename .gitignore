@@ -351,3 +351,9 @@ terraform.rc
 .swagger-ui
 
 .infra/terraform/*-outputs.json
+
+.env.*
+
+**/openapi-*.json
+
+src/api/doc/doc_manifest.json
