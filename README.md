@@ -60,9 +60,9 @@ uv sync
 
 ### 3. 📦 Install nodes depedencies
 
-````bash
+```bash
 yarn
-```
+```
 
 ### 3. 🔧 Configure AWS
 
@@ -77,7 +77,7 @@ Edit `config.py`:
         "live": False # Wheter or not it is your production environment
     },
 }
-````
+```
 
 > Later on, you will be able to declare multiple stages (dev, staging, prod, etc.). The "live" parameter is primarily used for configuring custom domain names.
 >
