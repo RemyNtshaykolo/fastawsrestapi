@@ -35,6 +35,8 @@ acm-%: # 🌐 Open AWS ACM console URL in the default browser
 cloudfront-%: # 🌐 Open AWS CloudFront console URL in the default browser
 	@source ./scripts/set-env.sh $* &&  uv run ./scripts/open-aws.py $* cloudfront
 
+
+
 ## LAMBDA
 build-push-lambda-image-%: # 🐳 Build and push lambda image to ECR 
 	@echo "\n========================================"
@@ -140,4 +142,5 @@ info-%: # 📚 Display links from STAGE-output.json file
 	@echo "📚 DISPLAYING LINKS FROM STAGE-output.json FILE"
 	@echo "========================================\n"
 	@source ./scripts/set-env.sh $* && uv run ./scripts/info.py $*
+
 
