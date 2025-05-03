@@ -148,7 +148,7 @@ make tf-apply-dev
 > It will deployed the following infrastructure.
 
 <p align="center">
-  <img src="archi.png" alt="logo" width="1000" />
+  <img src="docs-site/archi.png" alt="logo" width="1000" />
 </p>
 
 ### 6. Deploy the api documentation on the previously created s3 bucket
