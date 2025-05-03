@@ -2,10 +2,12 @@ import os
 import inspect
 import json
 import boto3
-from fastapi.openapi.utils import get_openapi
 
 
 def get_current_version():
+    """
+    Get the current version of the api when executed in the app.py files of each version.
+    """
     frame = inspect.stack()[1]  # Récupère l'appelant direct
     caller_file = frame.filename  # Chemin du fichier appelant
     folder = os.path.basename(os.path.dirname(os.path.abspath(caller_file)))
@@ -13,6 +15,9 @@ def get_current_version():
 
 
 def get_versions():
+    """
+    Get the list of versions and their metadata of the api from the `src/api/versions`.
+    """
     versions_path = "./src/api/versions"
     versions = [
         d
@@ -36,22 +41,18 @@ def get_versions():
 
 
 def get_versions_list():
+    """
+    Get the list of versions of the api from the `src/api/versions` folder.
+    """
     versions = get_versions()
     return [v["version"] for v in versions]
 
 
-def load_api_urls():
-    with open(".infra/terraform/outputs.json", "r") as f:
-        outputs = json.load(f)
-        return {
-            "api_urls": outputs["api_gateway_urls"]["value"],
-            "cognito_url": outputs["cognito_user_pool_domain_url"]["value"],
-            "s3_bucket": outputs["website_bucket_name"]["value"],
-            "aws_region": outputs["aws_region"]["value"],
-        }
 
-
-def set_urls_to_openapi_file(version, openapi_schema, urls):
+def set_servers_in_openapi_file(version, openapi_schema, urls):
+    """
+    Set the urls of the api in the openapi schema.
+    """
     api_urls = urls["api_urls"]
     if version not in api_urls:
         raise ValueError(f"Version {version} not found in urls")
@@ -64,6 +65,9 @@ def set_urls_to_openapi_file(version, openapi_schema, urls):
 
 
 def upload_openapi_schema(version, openapi_schema, bucket, aws_region):
+    """
+    Upload the openapi schema to the s3 bucket.
+    """
     s3_key = f"openapi-{version}.json"
     s3 = boto3.client("s3")
     url = f"http://{bucket}.s3.{aws_region}.amazonaws.com/{s3_key}"
@@ -76,6 +80,9 @@ def upload_openapi_schema(version, openapi_schema, bucket, aws_region):
 
 
 def delete_all_openapi_schemas(bucket):
+    """
+    Delete all the openapi schemas from the s3 bucket.
+    """
     s3 = boto3.client("s3")
     response = s3.list_objects_v2(Bucket=bucket, Prefix="openapi-")
     if "Contents" in response:
@@ -85,9 +92,6 @@ def delete_all_openapi_schemas(bucket):
         print("No openapi schemas found in S3")
 
 
-def get_openapi_wrapper(include_hidden=False):
-    get_openapi()
-    pass
 
 
 def load_terraform_outputs():
