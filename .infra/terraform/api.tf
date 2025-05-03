@@ -1,5 +1,6 @@
 # ACM certificate for the API domain name
 resource "aws_acm_certificate" "api" {
+  provider          = aws.acm_provider
   domain_name       = local.api_domain_name
   validation_method = "DNS"
 
@@ -12,9 +13,9 @@ resource "aws_acm_certificate" "api" {
 
 # Api Gateway custom domain name
 resource "aws_api_gateway_domain_name" "this" {
-  count                    = var.use_custom_domain ? 1 : 0
-  domain_name              = local.api_domain_name
-  regional_certificate_arn = aws_acm_certificate.api.arn
+  count           = var.use_custom_domain ? 1 : 0
+  domain_name     = local.api_domain_name
+  certificate_arn = aws_acm_certificate.api.arn
 
 
   tags = {
