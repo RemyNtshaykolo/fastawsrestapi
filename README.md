@@ -141,5 +141,5 @@ make tf-apply-dev
 > It will create an apigateway for each version. It will created a "shared" lambda for each version of your api.
 
 <p align="center">
-  <img src="archi.png" alt="logo" width="600" />
+  <img src="archi.png" alt="logo" width="1000" />
 </p>
