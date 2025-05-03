@@ -3,15 +3,6 @@ set -e
 STAGE=$1
 ACTION=$2  # Will be "plan" or "apply"
 
-
-echo "
-========================================
-🚀 LAUNCHING TERRAFORM ACTION WITH STAGE: $STAGE AND ACTION: $ACTION
-========================================
-"
-# Generate api documentation
-make generate-openapi-files-$STAGE
-
 echo "
 ========================================
 🚀 EXECUTING TERRAFORM $ACTION
