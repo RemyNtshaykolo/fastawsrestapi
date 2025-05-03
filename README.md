@@ -101,7 +101,7 @@ make tf-init-dev
 ### 🧪 2. Create the ECR Repository
 
 ```bash
-make tf-ecr-dev
+make tf-apply-ecr-dev
 ```
 
 > Before building and pushing the Docker image for the Lambda function, it is necessary to create an ECR repository to store the Lambda image.
