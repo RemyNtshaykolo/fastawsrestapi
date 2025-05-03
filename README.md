@@ -73,9 +73,9 @@ Edit `config.py`:
 ```
 
 > Later on, you will be able to declare multiple stages (dev, staging, prod, etc.). The "live" parameter is primarily used for configuring custom domain names.
-
+>
 > For non-live environments, such as dev, the stage name is included in the URLs:
-
+>
 > | Stage       | API URL                     | Docs URL                        |
 > | ----------- | --------------------------- | ------------------------------- |
 > | dev         | `api.dev.fastawsrestpi.com` | `doc.api.dev.fastawsrestpi.com` |
@@ -88,6 +88,7 @@ make tf-init-dev
 ```
 
 > This command downloads the AWS providers and the necessary modules into the `.infra/.terraform` directory.
+>
 > It also creates a local directory `.infra/terraform/terraform.tfstate.d/dev` where the Terraform state will be stored. However, you can use any Terraform backend to store your Terraform state, such as S3 or Terraform Cloud. This can be specified in the `version.tf` file.
 
 ### 🧪 2. Create the ECR Repository
