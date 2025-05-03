@@ -357,3 +357,5 @@ terraform.rc
 **/openapi-*.json
 
 src/api/doc/doc_manifest.json
+
+.DS_Store
