@@ -20,6 +20,7 @@ def main():
         with open(openapi_path, "r") as f:
             openapi_schema = json.load(f)
         openapi_schema = set_servers_in_openapi_file(version, openapi_schema, urls)
+
         url = upload_openapi_schema(
             version, openapi_schema, urls["s3_bucket"], urls["aws_region"]
         )
