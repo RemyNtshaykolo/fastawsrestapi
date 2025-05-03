@@ -175,3 +175,7 @@ make publish-doc-dev
 > <p align="center">
 > <img src="docs-site/api-doc.png" alt="logo" width="1000" />
 > </p>
+
+### 7. Test the api documentation
+
+!(video)[https://awsfastapireadme.s3.eu-west-3.amazonaws.com/Screen+Recording+2025-05-03+at+19.18.40.mov]
