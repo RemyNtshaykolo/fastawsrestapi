@@ -7,15 +7,14 @@
 
 
 ## Intro
-
 This repository provides everything you need to deploy and manage multiple versions of your FastAPI application on AWS API Gateway (REST) while leveraging its full enterprise-grade capabilities:
 
 ✅ Key Features:
-	•	🔐 Authentication & Authorization
+- 🔐 Authentication & Authorization
 Built-in support for OAuth2, API Keys, and Usage Plans.
-	•	🚦 Traffic Control
+- 🚦 Traffic Control
 Fine-tuned throttling and burst limits to ensure stability and protect your backend.
-	•	⚡ Response Caching
+- ⚡ Response Caching
 Improve performance and reduce latency with smart caching strategies.
 
 🔧 What Problem Does It Solve?
@@ -32,7 +31,6 @@ This boilerplate automates the entire process by overriding and enriching the Op
 📚 Multi-Version Documentation Included
 
 Easily generate and deploy branded Swagger documentation for multiple API versions. Docs are hosted on an S3 static website, fully styled and accessible to your stakeholders.
-
 
 ## Prerequisites
 
