@@ -65,7 +65,9 @@ tf-apply-%: # 🚀 Apply Terraform changes
 	@echo "\n========================================"
 	@echo "🚀 APPLYING TERRAFORM CHANGES"
 	@echo "========================================\n"
-	@source ./scripts/set-env.sh $* && ./scripts/tf-action.sh $* apply
+	@source ./scripts/set-env.sh $* && make generate-openapi-files-$* && ./scripts/tf-action.sh $* apply
+
+
 
 
 tf-destroy-%: # 🗑️ Destroy Terraform resources
