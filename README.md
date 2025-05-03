@@ -119,8 +119,6 @@ make build-push-lambda-image-dev
 >
 > Note that an `aws_ecr_lifecycle_policy` is in place, which is useful for automatically removing untagged images.
 >
-> - The `aws_api_gateway_rest_api` Terraform resource can utilize an OpenAPI file to create an API with its various settings.
->
 > The API source code is located in the `src/api/` directory. For each version of your API, a subfolder exists in `src/api/versions`. In the initial version of this boilerplate, only two versions exists: v1 and v2.
 >
 > In theses folder you will find an app.py where a lambda handler (entrypoint for the lambdas) can be found. This entrypoint is used in `.infra/terraform/api.tf` folder.
@@ -178,7 +176,4 @@ make publish-doc-dev
 
 ### 7. Test the api documentation
 
-
 https://github.com/user-attachments/assets/cfb0dd69-28fe-4dd6-a279-7e91484f69f6
-
-
