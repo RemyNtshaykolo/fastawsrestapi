@@ -50,4 +50,5 @@ app.include_router(demo_router)
 
 
 def lambda_handler(event, context):
-    return Mangum(app).__call__(event, context)
+    version = get_current_version()
+    return Mangum(app, api_gateway_base_path=version).__call__(event, context)
