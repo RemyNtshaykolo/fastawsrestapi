@@ -65,7 +65,7 @@ tf-apply-%: # 🚀 Apply Terraform changes
 	@echo "\n========================================"
 	@echo "🚀 APPLYING TERRAFORM CHANGES"
 	@echo "========================================\n"
-	@source ./scripts/set-env.sh $* && make generate-openapi-files-$* && ./scripts/tf-action.sh $* apply
+	@source ./scripts/set-env.sh $* && ./scripts/tf-action.sh $* apply
 
 
 
@@ -136,6 +136,7 @@ deploy-%: # ✨ Build lambda image, deploy api and host documentation on s3
 	@echo "🚀 STARTING DEPLOYMENT"
 	@echo "========================================\n"
 	@make build-push-lambda-image-$*
+	@make generate-openapi-files-$*
 	@make tf-apply-$*
 	@make doc-$*
 
