@@ -1,7 +1,9 @@
 import webbrowser
 import argparse
-import toml
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import CONFIG
 
 
 def get_account_id(stage):
@@ -9,18 +11,9 @@ def get_account_id(stage):
     Gets the AWS account ID for the given stage from pyproject.toml
     """
     try:
-        # Get the project root directory
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        pyproject_path = os.path.join(project_root, "pyproject.toml")
+        account_id = CONFIG["aws_accounts"][stage]["aws_account"]
 
-        # Read and parse pyproject.toml
-        config = toml.load(pyproject_path)
-
-        # Get account ID for the stage
-        account_id = config["tool"]["infrastructure"]["aws_accounts"][stage][
-            "aws_account"
-        ]
-        region = config["tool"]["infrastructure"]["aws_region"]
+        region = CONFIG["aws_region"]
 
         return account_id, region
     except (KeyError, FileNotFoundError) as e:
