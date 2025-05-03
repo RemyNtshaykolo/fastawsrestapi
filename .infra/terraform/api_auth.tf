@@ -36,7 +36,8 @@ resource "aws_cognito_user_pool_domain" "main" {
 
 
 resource "aws_cognito_user_pool_client" "this" {
-  name                                 = "${local.prefix}-client"
+  for_each                             = var.oauth2_clients
+  name                                 = "${local.prefix}-${each.key}"
   user_pool_id                         = aws_cognito_user_pool.this.id
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["client_credentials"]
