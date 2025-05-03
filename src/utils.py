@@ -6,11 +6,10 @@ from fastapi.openapi.utils import get_openapi
 
 
 def get_current_version():
-    frame = inspect.stack()[1]
-    caller_file = frame.filename
+    frame = inspect.stack()[1]  # Récupère l'appelant direct
+    caller_file = frame.filename  # Chemin du fichier appelant
     folder = os.path.basename(os.path.dirname(os.path.abspath(caller_file)))
-    version = folder.split("v")[1]
-    return version
+    return folder
 
 
 def get_versions():
@@ -52,30 +51,15 @@ def load_api_urls():
         }
 
 
-def set_servers_urls_to_openapi_schema(version, openapi_schema, urls):
-    if version not in urls:
-        raise ValueError(f"Version {version} not found in urls")
-    openapi_schema["servers"] = [{"url": urls[version]}]
-    return openapi_schema
-
-
-def set_token_url_to_openapi_schema(openapi_schema, token_url):
-    # Création de la structure avec setdefault() de manière chaînée
-    openapi_schema.setdefault("components", {}).setdefault(
-        "securitySchemes", {}
-    ).setdefault("Oauth2ClientCredentials", {}).setdefault("flows", {}).setdefault(
-        "clientCredentials", {}
-    )[
-        "tokenUrl"
-    ] = token_url
-
-    return openapi_schema
-
-
 def set_urls_to_openapi_file(version, openapi_schema, urls):
-    openapi_schema = set_servers_urls_to_openapi_schema(
-        version, openapi_schema, urls["api_urls"]
-    )
+    api_urls = urls["api_urls"]
+    if version not in api_urls:
+        raise ValueError(f"Version {version} not found in urls")
+
+    if os.environ["USE_CUSTOM_DOMAIN"] == "true":
+        openapi_schema["servers"] = [{"url": api_urls[version]["custom"]}]
+    else:
+        openapi_schema["servers"] = [{"url": api_urls[version]["raw"]}]
     return openapi_schema
 
 

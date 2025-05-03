@@ -2,7 +2,7 @@
 set -e
 STAGE=$1
 ACTION=$2  # Will be "plan" or "apply"
-source ./scripts/set-env.sh $STAGE
+
 
 echo "
 ========================================

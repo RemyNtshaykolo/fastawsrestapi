@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import CONFIG
 from src.utils import get_versions_list
@@ -7,35 +8,36 @@ import toml
 import json
 from pathlib import Path
 
+
 def get_app_name():
-    with open("pyproject.toml", 'r') as file:
+    with open("pyproject.toml", "r") as file:
         pyproject_data = toml.load(file)
-    app_name = pyproject_data['project']['name']
-    
+    app_name = pyproject_data["project"]["name"]
+
     return app_name
 
 
 def main(stage):
-  
-    tfvars_json = f".infra/terraform/{stage}.tfvars.json"
-    if stage not in CONFIG['aws_accounts']:
-        declared_stages = ', '.join(CONFIG['aws_accounts'].keys())
-        print(f"Stage '{stage}' does not exist in config.py, available stages: {declared_stages}")
-        sys.exit(1)
-    
 
-    aws_account = CONFIG['aws_accounts'][stage]
-    aws_profile = aws_account['profile']
-    aws_account_id = aws_account['aws_account']
-    aws_region = CONFIG['aws_region']
-    domain_name = CONFIG['networking']['domain_name']
-    use_custom_domain = CONFIG['networking']['use_custom_domain']
-    oauth2_clients = CONFIG['authentication']['oauth2_clients']
-    usage_plans = CONFIG['authentication']['usage_plans']
+    tfvars_json = f".infra/terraform/{stage}.tfvars.json"
+    if stage not in CONFIG["aws_accounts"]:
+        declared_stages = ", ".join(CONFIG["aws_accounts"].keys())
+        print(
+            f"Stage '{stage}' does not exist in config.py, available stages: {declared_stages}"
+        )
+        sys.exit(1)
+
+    aws_account = CONFIG["aws_accounts"][stage]
+    aws_profile = aws_account["profile"]
+    aws_account_id = aws_account["aws_account"]
+    aws_region = CONFIG["aws_region"]
+    domain_name = CONFIG["networking"]["domain_name"]
+    use_custom_domain = CONFIG["networking"]["use_custom_domain"]
+    oauth2_clients = CONFIG["authentication"]["oauth2_clients"]
+    usage_plans = CONFIG["authentication"]["usage_plans"]
     app_name = get_app_name()
-    api_title = CONFIG['documentation']['title']
+    api_title = CONFIG["documentation"]["title"]
     api_versions = get_versions_list()
-    
 
     env_file = Path(f".env.{stage}")
 
@@ -49,7 +51,7 @@ def main(stage):
         "APP_NAME": app_name,
         "TF_WORKSPACE": stage,
         "PYTHONPATH": f"src",
-        "API_TITLE": api_title
+        "API_TITLE": api_title,
     }
 
     # Export to Python process environment
@@ -84,10 +86,10 @@ def main(stage):
         "oauth2_clients": oauth2_clients,
         "usage_plans": usage_plans,
         "api_versions": api_versions,
-        "use_custom_domain": use_custom_domain
+        "use_custom_domain": use_custom_domain,
     }
 
-    with open(tfvars_json, 'w') as f:
+    with open(tfvars_json, "w") as f:
         json.dump(final_json, f, indent=2)
 
 

@@ -58,14 +58,10 @@ def main():
         console.print(table)
 
     except json.JSONDecodeError:
-        print(f"Error: Invalid JSON in {output_file}")
-        return 1
+        raise Exception(f"Error: Invalid JSON in {output_file}")
     except Exception as e:
-        print(f"Error: {str(e)}")
-        return 1
-
-    return 0
+        raise Exception(f"Error: {str(e)}")
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
