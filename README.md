@@ -72,14 +72,14 @@ Edit `config.py`:
 }
 ```
 
-Later on, you will be able to declare multiple stages (dev, staging, prod, etc.). The "live" parameter is primarily used for configuring custom domain names.
+> Later on, you will be able to declare multiple stages (dev, staging, prod, etc.). The "live" parameter is primarily used for configuring custom domain names.
 
-For non-live environments, such as dev, the stage name is included in the URLs:
+> For non-live environments, such as dev, the stage name is included in the URLs:
 
-| Stage       | API URL                     | Docs URL                        |
-| ----------- | --------------------------- | ------------------------------- |
-| dev         | `api.dev.fastawsrestpi.com` | `doc.api.dev.fastawsrestpi.com` |
-| prod (live) | `api.fastawsrestpi.com`     | `doc.api.fastawsrestpi.com`     |
+> | Stage       | API URL                     | Docs URL                        |
+> | ----------- | --------------------------- | ------------------------------- |
+> | dev         | `api.dev.fastawsrestpi.com` | `doc.api.dev.fastawsrestpi.com` |
+> | prod (live) | `api.fastawsrestpi.com`     | `doc.api.fastawsrestpi.com`     |
 
 ### ✅ 4. Init Terraform
 
