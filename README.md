@@ -1,4 +1,3 @@
-<!-- Logo et Titre centré -->
 <p align="center">
   <img src="src/api/doc/logo.png" alt="logo" width="200" />
 </p>
@@ -10,7 +9,6 @@
   Includes hosted Swagger UI on S3 with custom domains and versioning.
 </p>
 
----
 
 ## 🚀 Introduction
 
@@ -24,7 +22,6 @@ This boilerplate lets you deploy versioned FastAPI applications on AWS API Gatew
 
 It **automatically transforms** the default OpenAPI schema from FastAPI by injecting AWS-specific extensions — no manual editing needed.
 
----
 
 ## ✨ Features
 
@@ -34,7 +31,6 @@ It **automatically transforms** the default OpenAPI schema from FastAPI by injec
 - 📚 **Multi-Version Docs** – Swagger UI hosted per version (on S3)  
 - 🌐 **Custom Domains** – Subdomain config per environment
 
----
 
 ## 🧰 Prerequisites
 
@@ -45,7 +41,6 @@ Install:
 - [Docker](https://www.docker.com/)
 - [Node.js](https://nodejs.org/)
 
----
 
 ## ⚙️ Quickstart — Deploy in < 5 Minutes
 
@@ -58,7 +53,6 @@ make help
 All commands follow this format: `make <command>-<stage>`  
 _Example_: `make deploy-dev`
 
----
 
 ### 2. 📦 Install Python Dependencies
 
@@ -67,7 +61,6 @@ uv venv .venv
 uv sync
 ```
 
----
 
 ### 3. 🔧 Configure AWS
 
@@ -104,7 +97,6 @@ make tf-init-dev
 > Initializes Terraform, downloads providers, sets up local state.  
 > You can configure any backend (S3, Terraform Cloud...) in `version.tf`.
 
----
 
 ### 🧪 2. Create the ECR Repository
 
@@ -114,7 +106,6 @@ make tf-ecr-dev
 
 > Creates an AWS ECR repository for the Lambda Docker image.
 
----
 
 ### 🐳 3. Build & Push Lambda Image
 
@@ -125,7 +116,7 @@ make build-push-lambda-image-dev
 > Builds and pushes your FastAPI Docker image to ECR.  
 Includes lifecycle policy to remove untagged images.
 
----
+
 
 ### 📄 4. Generate OpenAPI Files
 
@@ -138,7 +129,7 @@ Generates two files per API version:
 - `openapi-v1-terraform.json` → used by AWS Gateway  
 - `openapi-v1-swagger.json` → used for Swagger UI on S3
 
----
+
 
 ### 🚀 5. Full Deployment
 
@@ -151,7 +142,7 @@ make deploy-dev
 - Terraform apply  
 - Swagger docs upload to S3
 
----
+
 
 ## 📁 Project Structure
 
@@ -169,7 +160,7 @@ make deploy-dev
 └── README.md
 ```
 
----
+
 
 ## 🧪 Example Make Commands
 
@@ -181,7 +172,6 @@ make generate-openapi-files-dev
 make deploy-dev
 ```
 
----
 
 ## 🧑‍💻 Contributing
 
