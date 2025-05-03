@@ -1,0 +1,216 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Fast REST API",
+    "description": "Deploy your aws rest api in minutes",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/token": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Get Token",
+        "description": "Get a token to access the API from Swagger UI.\n    \nThe Authorization header must be in the format: 'Basic <base64_encoded_credentials>'\nwhere <base64_encoded_credentials> is the base64 encoding of 'client_id:client_secret'.\n\nExample:\n- If client_id is 'my_client' and client_secret is 'my_secret'\n- First concatenate with colon: 'my_client:my_secret'\n- Then base64 encode: 'bXlfY2xpZW50Om15X3NlY3JldA=='\n- Final header value: 'Basic bXlfY2xpZW50Om15X3NlY3JldA=='",
+        "operationId": "get_token_token_post",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Scope"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Authorization header in Basic auth format with base64 encoded client_id:client_secret",
+              "title": "Authorization"
+            },
+            "description": "Authorization header in Basic auth format with base64 encoded client_id:client_secret"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "x-conf": {
+          "caching": {
+            "enabled": true,
+            "maxTtl": 3600,
+            "keys": {
+              "header": ["Authorization"],
+              "query": ["scope"]
+            }
+          }
+        }
+      }
+    },
+    "/throttled": {
+      "get": {
+        "tags": ["demo"],
+        "summary": "Test",
+        "operationId": "test_throttled_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "x-conf": {
+          "throttling": {
+            "rateLimit": 0.1,
+            "burstLimit": 1
+          }
+        }
+      }
+    },
+    "/unthrottled": {
+      "get": {
+        "tags": ["demo"],
+        "summary": "Test",
+        "operationId": "test_unthrottled_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api-key-protected-route": {
+      "get": {
+        "tags": ["demo"],
+        "summary": "Test",
+        "operationId": "test_api_key_protected_route_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/oauth2-protected-route": {
+      "get": {
+        "tags": ["demo"],
+        "summary": "Test",
+        "operationId": "test_oauth2_protected_route_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Oauth2ClientCredentials": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "APIKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      },
+      "Oauth2ClientCredentials": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {},
+            "tokenUrl": "default/token"
+          }
+        }
+      }
+    }
+  }
+}

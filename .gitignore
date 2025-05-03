@@ -353,3 +353,5 @@ terraform.rc
 .infra/terraform/*-outputs.json
 
 .env.*
+
+**/openapi-*.json
