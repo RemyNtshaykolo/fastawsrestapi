@@ -355,3 +355,5 @@ terraform.rc
 .env.*
 
 **/openapi-*.json
+
+src/api/doc/doc_manifest.json
