@@ -16,21 +16,14 @@ Manually editing these configurations is tedious and error-prone.
 
 This boilerplate automates the process by overriding and enriching the FastAPI-generated OpenAPI documentation, making your APIs instantly ready for production deployment on AWS — with all the advanced settings already in place.
 
-## ✅ Key Features
--	🔐 Authentication & Authorization
-Native support for OAuth2, API Keys, and Usage Plans.
--	🚦 Traffic Control
-Fine-tuned throttling and burst limits to protect your backend.
-- ⚡ Response Caching
-Improve performance and reduce latency with built-in caching.
+---
+Key Features
+-	🔐 Authentication & Authorization : Native support for OAuth2, API Keys, and Usage Plans.
+-	🚦 Traffic Control : Fine-tuned throttling and burst limits to protect your backend.
+- ⚡ Response Caching : Improve performance and reduce latency with built-in caching.
+- 📚 Multi-Version Documentation Included : Easily generate and deploy branded, versioned Swagger documentation — hosted on an S3 static website, ready to share with your team or stakeholders.
+---
 
-📚 Multi-Version Documentation Included
-
-Easily generate and deploy branded, versioned Swagger documentation — hosted on an S3 static website, ready to share with your team or stakeholders.
-
-⸻
-
-Souhaites-tu une version en français également ?
 ## Prerequisites
 
 - Terraform installed
