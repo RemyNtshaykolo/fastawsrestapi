@@ -1,6 +1,6 @@
 from utils import (
     get_versions,
-    set_urls_to_openapi_file,
+    set_servers_in_openapi_file,
     load_terraform_outputs,
     upload_openapi_schema,
     delete_all_openapi_schemas,
@@ -19,7 +19,7 @@ def main():
         openapi_path = version_metadata["openapi_path_swagger"]
         with open(openapi_path, "r") as f:
             openapi_schema = json.load(f)
-        openapi_schema = set_urls_to_openapi_file(version, openapi_schema, urls)
+        openapi_schema = set_servers_in_openapi_file(version, openapi_schema, urls)
         url = upload_openapi_schema(
             version, openapi_schema, urls["s3_bucket"], urls["aws_region"]
         )
