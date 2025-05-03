@@ -72,6 +72,7 @@ def upload_openapi_schema(version, openapi_schema, bucket, aws_region):
     url = f"http://{bucket}.s3.{aws_region}.amazonaws.com/{s3_key}"
     try:
         s3.put_object(Bucket=bucket, Key=s3_key, Body=json.dumps(openapi_schema))
+        print(f"Openapi schema uploaded to {url}")
         return url
     except Exception as e:
         print(f"Error uploading file to S3: {str(e)}")
@@ -87,8 +88,7 @@ def delete_all_openapi_schemas(bucket):
     if "Contents" in response:
         for obj in response["Contents"]:
             s3.delete_object(Bucket=bucket, Key=obj["Key"])
-    else:
-        print("No openapi schemas found in S3")
+    
 
 
 def load_terraform_outputs():
