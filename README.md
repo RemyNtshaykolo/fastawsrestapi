@@ -9,6 +9,13 @@
   Includes hosted Swagger UI on S3 with custom domains and versioning.
 </p>
 
+<p align="center">
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" alt="Python version"></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-%F0%9F%94%A5-green?logo=fastapi" alt="FastAPI"></a>
+  <a href="https://registry.terraform.io/"><img src="https://img.shields.io/badge/Terraform-%E2%9C%94-purple?logo=terraform" alt="Terraform"></a>
+  <a href="https://docs.docker.com/"><img src="https://img.shields.io/badge/Docker-ready-blue?logo=docker" alt="Docker"></a>
+</p>
+
 ## 🚀 Introduction
 
 This boilerplate lets you deploy versioned FastAPI applications on AWS API Gateway (REST) with:
