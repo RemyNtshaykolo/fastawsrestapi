@@ -164,3 +164,7 @@ make publish-doc-dev
 ```
 
 > This command build the actual swagger documentation and push it to the previously created s3 bucket.
+> The link of your api documentation should appear in the terminal
+> <p align="center">
+> <img src="docs-site/api-doc.png" alt="logo" width="1000" />
+> </p>
