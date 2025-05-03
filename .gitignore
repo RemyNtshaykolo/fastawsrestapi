@@ -351,3 +351,5 @@ terraform.rc
 .swagger-ui
 
 .infra/terraform/*-outputs.json
+
+.env.*
