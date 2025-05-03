@@ -1,5 +1,5 @@
 [project]
-name = "fastawsrestapi" # This will be used for every terraform prefix
+name = "fastrestapi" # This will be used for every terraform prefix
 version = "0.1.0"
 description = "Deploy your aws rest api in minutes"
 readme = "README.md"

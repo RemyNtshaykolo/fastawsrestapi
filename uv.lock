@@ -133,7 +133,7 @@ wheels = [
 ]
 
 [[package]]
-name = "fastawsrestapi"
+name = "fastrestapi"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
