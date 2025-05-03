@@ -159,10 +159,10 @@ make upload-openapi-files-to-s3-dev
 
 > This command inserts the URL of the previously created API into the `servers` key of the `openapi-*-swagger.json` files. It then uploads these files to the previously created S3 bucket.
 
-
 ```
 make build-swagger-ui-dev
 ```
+
 > This command builds the swagger documenation
 
 ```
@@ -171,6 +171,7 @@ make publish-doc-dev
 
 > This command upload push it to the previously created s3 bucket.
 > The link of your api documentation should appear in the terminal
+>
 > <p align="center">
 > <img src="docs-site/api-doc.png" alt="logo" width="1000" />
 > </p>

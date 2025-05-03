@@ -37,13 +37,13 @@ CONFIG = {
     # API KEYS + OAUTH2 CLIENTS
     ################################################################################################################################################
     "authentication": {
-        "oauth2_clients": ["test-ouath2-client"],
+        "oauth2_clients": [],
         "usage_plans": {
             "basic": {
                 "limit": 10000,
                 "offset": 0,
                 "period": "MONTH",
-                "api_keys": ["client_a", "client_b"],
+                "api_keys": ["client_a"],
             },
         },
     },

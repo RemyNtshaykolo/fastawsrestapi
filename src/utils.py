@@ -88,7 +88,6 @@ def delete_all_openapi_schemas(bucket):
     if "Contents" in response:
         for obj in response["Contents"]:
             s3.delete_object(Bucket=bucket, Key=obj["Key"])
-    
 
 
 def load_terraform_outputs():
