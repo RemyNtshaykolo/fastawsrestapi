@@ -2,111 +2,134 @@
   <img src="src/api/doc/logo.png" alt="logo">
 </div>
 
-> Deploy your FastAPI application on Amazon API Gateway's REST service using Terraform and an OpenAPI specification.
-> It also provides the necessary Terraform code to host your auto-generated API documentation (Swagger UI) on an S3 website, with optional support for custom domains.
+
+Deploy your FastAPI application on AWS API Gateway (REST) using Terraform and OpenAPI.
+This boilerplate also hosts versioned Swagger UI docs on an S3 static website with optional custom domains.
+
+⸻
+
+🚀 Introduction
+
+This repository provides everything you need to deploy and manage multi-version FastAPI apps on AWS API Gateway (REST), with full support for enterprise features like:
+	•	OAuth2 & API Keys
+	•	Throttling & burst control
+	•	Response caching
+	•	Custom domain names
+	•	Hosted Swagger UI per version
+
+Instead of manually editing x-amazon-apigateway-* extensions in OpenAPI, this boilerplate automates the process, transforming your FastAPI schema into a production-ready API config.
+
+⸻
+
+✨ Features
+	•	🔐 Authentication & Authorization: OAuth2, API Keys, Usage Plans
+	•	🚦 Traffic Control: Fine-tuned throttling and burst limits
+	•	⚡ Response Caching: Reduce latency & boost performance
+	•	📚 Multi-Version Docs: Hosted Swagger UI for each version, branded and deployed on S3
+	•	🌐 Custom Domains: Easily configure subdomains per environment
+
+⸻
+
+🧰 Prerequisites
+
+Make sure the following tools are installed:
+	•	Terraform
+	•	UV
+	•	Docker
+	•	Node.js
+
+⸻
+
+⚙️ Quickstart — Deploy in < 5 min
+
+1. 🔍 Explore Available Commands
+
+make help
+
+All commands follow this structure: make <action>-<stage> (e.g. make deploy-dev).
+
+⸻
+
+2. 📦 Install Python Dependencies
+
+uv venv .venv
+uv sync
 
 
 
-## Introduction
+⸻
 
-This repository provides everything you need to deploy and manage multiple versions of your FastAPI application on AWS API Gateway (REST) — while taking full advantage of its enterprise-grade capabilities.
+3. 🔧 Configure AWS Access
 
-FastAPI generates a standard OpenAPI schema by default, but AWS API Gateway requires specific x-amazon-apigateway-* extensions to enable advanced features like custom authorization flows, method-level caching, and throttling policies.
-Manually editing these configurations is tedious and error-prone.
+Edit config.py:
 
-This boilerplate automates the process by overriding and enriching the FastAPI-generated OpenAPI documentation, making your APIs instantly ready for production deployment on AWS — with all the advanced settings already in place.
-
----
-Key Features
--	🔐 Authentication & Authorization : Native support for OAuth2, API Keys, and Usage Plans.
--	🚦 Traffic Control : Fine-tuned throttling and burst limits to protect your backend.
-- ⚡ Response Caching : Improve performance and reduce latency with built-in caching.
-- 📚 Multi-Version Documentation Included : Easily generate and deploy branded, versioned Swagger documentation — hosted on an S3 static website, ready to share with your team or stakeholders.
----
-
-## Prerequisites
-
-- Terraform installed
-- UV installed
-  - [Installation Guide](https://docs.astral.sh/uv/getting-started/installation/)
-- Docker installed
-- Node.js installed
-
-## Launching Your First API in Less Than 5 Minutes
-
-First, with `make help`, you will get a list of all available commands. All the make commands are parameterized as `command-stage_name`.
-
-### Install dependencies
-
-- Create a virtual env : `uv venv .venv`
-- Install dependencies : `uv sync`
-
-### Set up your documentation logo
-
-- src/api/doc/icon.png : favicon
-- src/api/doc/logo.png : Navbar icon
-
-### Set Up Your AWS Account and Region
-In `config.py`, fill in your dev AWS account and aws region.
-
-```python
-  "aws_region": "eu-west-3", # Your region
-    "aws_accounts": {
-        "dev": {
-            "aws_account": "408566731358", # Your aws accound ID
-            "profile": "fast-rest-api", # The aws profile you set for this account in your .aws/credentials file.
-            "live":False
-        },
+"aws_region": "eu-west-3",
+"aws_accounts": {
+    "dev": {
+        "aws_account": "408566731358",
+        "profile": "fast-rest-api",
+        "live": False
     },
-```
-Latter on, you will be able to declared multiple stages (dev, staging, prod, etc.). The `live` parameter is mainly used for custom domain name configuration.
+}
 
-For non-live environments, such as dev, the stage name is include in the urls:
-`api.dev.fastawsrestpi.com` : custom domain name for your api.
-`doc.api.dev.fastawsrestpi.com` : custome domain name for your api documentation.
+This allows domain differentiation:
 
-For your live environment, such as prod, the stage name is not included
-`api.fastawsrestpi.com`
-`doc.api.fastawsrestpi.com`
+Environment	API URL	Docs URL
+dev	api.dev.fastawsrestpi.com	doc.api.dev.fastawsrestpi.com
+prod	api.fastawsrestpi.com	doc.api.fastawsrestpi.com
 
-### Deploy
 
-In the following paragraph a `dev` environment was declared in the `config.py` configuration file. Thus all the following make command will use the `-dev`.
-Example : `make tf-init-%` becomes `make tf-init-dev`
 
-#### Initialise your terraform
+⸻
 
-Use the command `make tf-init-dev` to intialise your terraform workform.
+🛠️ Deployment Steps
 
-Details:
+✅ 1. Init Terraform
 
-> This command downloads the aws providers and the required modules in the `.infra/.terraform` folder.
-> it also create local folder `.infra/terraform/terraform.tfstate.d/dev` where the terraform state will be stored. However you can use whatever terraform backend to store your terraform state `s3`, `terraform cloud`... This can be specified in the `version.tf` folder.
+make tf-init-dev
 
-#### Create the ECR repository
+Initializes Terraform, installs providers, and sets up the state folder.
+You can use any backend (S3, Terraform Cloud…) by editing version.tf.
 
-Before to build and push the docker image for the lambda. We first need to create an ECR repository where the lambda image will be pushed.
-Use the command `make tf-ecr-dev`. It will apply the terraform configuration but only for the resources `aws_ecr_repository` in the `.infra/terraform/ecr.tf` file.
+⸻
 
-#### Build and push the lambda docker image.
+🧪 2. Create the ECR Repository
 
-Use the command `make build-push-lambda-image-dev` to build and push the lambda docker image to the previously created ECR repository.
+make tf-ecr-dev
 
-Details:
+Creates only the aws_ecr_repository used by the Lambda Docker image.
 
-> This commands build your docker image using the `Dockerfile`. It was found (https://docs.astral.sh/uv/guides/integration/aws-lambda/#deploying-a-docker-image:~:text=other%20unnecessary%20files.-,Dockerfile,-FROM%20ghcr.io)[here]
->
-> Note that a `aws_ecr_lifecycle_policy` exists, this is usefull in order to automatically remove untagged image.
+⸻
 
-- The `aws_api_gateway_rest_api` terraform resource can leverage an openapi file in order to create in an api with its differents settings.
+🐳 3. Build & Push Lambda Docker Image
 
-The api source code is in the folder `src/api/`. For each version of your api a subfolder exsit in the `src/api/versions`. In the initial version of this boilerplate only one version exists v1.
-Use the command `make generate-openapi-files-dev` to generate the openapi for each version of your api. Two files are created for each versions
+make build-push-lambda-image-dev
 
-- `openapi-<version>-terraform.json`
-- `openapi-<version>-swagger.json`
+Uses the provided Dockerfile to build your API image and push to ECR.
+Includes lifecycle policy to clean up untagged images.
 
-- Build and push the lambda docker image on the ECR
-- Apply terraform
-- Build and push documentation
-  `make deploy-dev`
+⸻
+
+📄 4. Generate OpenAPI Files
+
+make generate-openapi-files-dev
+
+For each version (src/api/versions/v1/), two files are generated:
+
+	•	openapi-v1-terraform.json (for AWS Gateway)
+	•	openapi-v1-swagger.json (for Swagger UI)
+
+⸻
+
+🚀 5. Deploy Everything
+
+make deploy-dev
+
+Performs all steps:
+
+	•	Build + push Lambda image
+	•	Apply Terraform
+	•	Upload Swagger UI docs to S3
+
+⸻
+
