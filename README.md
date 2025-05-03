@@ -14,7 +14,7 @@
   <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-%F0%9F%94%A5-green?logo=fastapi" alt="FastAPI"></a>
   <a href="https://registry.terraform.io/"><img src="https://img.shields.io/badge/Terraform-%E2%9C%94-purple?logo=terraform" alt="Terraform"></a>
   <a href="https://docs.docker.com/"><img src="https://img.shields.io/badge/Docker-ready-blue?logo=docker" alt="Docker"></a>
-  <a href="https://github.com/sponsors/<ton-username>">
+  <a href="https://github.com/sponsors/RemyNtshaykolo">
     <img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=githubsponsors" alt="Sponsor me">
   </a>
 </p>
