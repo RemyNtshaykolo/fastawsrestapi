@@ -178,4 +178,7 @@ make publish-doc-dev
 
 ### 7. Test the api documentation
 
-<video src="https://awsfastapireadme.s3.eu-west-3.amazonaws.com/Screen+Recording+2025-05-03+at+19.18.40.mov" width=1000/>
+
+https://github.com/user-attachments/assets/cfb0dd69-28fe-4dd6-a279-7e91484f69f6
+
+
