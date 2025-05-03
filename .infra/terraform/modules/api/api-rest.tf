@@ -80,6 +80,9 @@ resource "aws_api_gateway_gateway_response" "test" {
   }
   rest_api_id   = aws_api_gateway_rest_api.this.id
   response_type = each.value
+  response_templates = {
+    "application/json" = "{\"message\":$context.error.messageString}"
+  }
   response_parameters = {
     "gatewayresponse.header.Access-Control-Allow-Origin"  = "'*'"
     "gatewayresponse.header.Access-Control-Allow-Headers" = "'*'"
