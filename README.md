@@ -37,6 +37,7 @@ Install:
 - [UV](https://docs.astral.sh/uv/getting-started/installation/)
 - [Docker](https://www.docker.com/)
 - [Node.js](https://nodejs.org/)
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 
 ## ⚙️ Quickstart — Deploy in < 5 Minutes
 
@@ -57,6 +58,12 @@ uv venv .venv
 uv sync
 ```
 
+### 3. 📦 Install nodes depedencies
+
+````bash
+yarn
+```
+
 ### 3. 🔧 Configure AWS
 
 Edit `config.py`:
@@ -70,7 +77,7 @@ Edit `config.py`:
         "live": False # Wheter or not it is your production environment
     },
 }
-```
+````
 
 > Later on, you will be able to declare multiple stages (dev, staging, prod, etc.). The "live" parameter is primarily used for configuring custom domain names.
 >
@@ -138,8 +145,22 @@ make tf-apply-dev
 ```
 
 > This command apply the terraform configuration.
-> It will create an apigateway for each version. It will created a "shared" lambda for each version of your api.
+> It will deployed the following infrastructure.
 
 <p align="center">
   <img src="archi.png" alt="logo" width="1000" />
 </p>
+
+### 6. Deploy the api documentation on the previously created s3 bucket
+
+```
+make upload-openapi-files-to-s3-dev
+```
+
+> This command inserts the URL of the previously created API into the `servers` key of the `openapi-*-swagger.json` files. It then uploads these files to the previously created S3 bucket.
+
+```
+make publish-doc-dev
+```
+
+> This command build the actual swagger documentation and push it to the previously created s3 bucket.

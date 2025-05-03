@@ -48,7 +48,6 @@ def get_versions_list():
     return [v["version"] for v in versions]
 
 
-
 def set_servers_in_openapi_file(version, openapi_schema, urls):
     """
     Set the urls of the api in the openapi schema.
@@ -90,8 +89,6 @@ def delete_all_openapi_schemas(bucket):
             s3.delete_object(Bucket=bucket, Key=obj["Key"])
     else:
         print("No openapi schemas found in S3")
-
-
 
 
 def load_terraform_outputs():
