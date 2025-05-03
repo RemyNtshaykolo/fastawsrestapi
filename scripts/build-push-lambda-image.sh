@@ -1,8 +1,5 @@
 #!/bin/bash
 set -e
-source ./scripts/set-env.sh
-
-STAGE=$1
 
 IMAGE_NAME=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${STAGE}-${APP_NAME}:lambda
 
