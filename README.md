@@ -1,68 +1,79 @@
-<div style="text-align: center;">
-  <img src="src/api/doc/logo.png" alt="logo">
-</div>
+<!-- Logo et Titre centré -->
+<p align="center">
+  <img src="src/api/doc/logo.png" alt="logo" width="200" />
+</p>
 
+<h2 align="center">FastAPI to AWS API Gateway (REST) Boilerplate</h2>
 
-Deploy your FastAPI application on AWS API Gateway (REST) using Terraform and OpenAPI.
-This boilerplate also hosts versioned Swagger UI docs on an S3 static website with optional custom domains.
+<p align="center">
+  Deploy your FastAPI app on AWS API Gateway REST using Terraform + OpenAPI.<br>
+  Includes hosted Swagger UI on S3 with custom domains and versioning.
+</p>
 
-⸻
+---
 
-🚀 Introduction
+## 🚀 Introduction
 
-This repository provides everything you need to deploy and manage multi-version FastAPI apps on AWS API Gateway (REST), with full support for enterprise features like:
-	•	OAuth2 & API Keys
-	•	Throttling & burst control
-	•	Response caching
-	•	Custom domain names
-	•	Hosted Swagger UI per version
+This boilerplate lets you deploy versioned FastAPI applications on AWS API Gateway (REST) with:
 
-Instead of manually editing x-amazon-apigateway-* extensions in OpenAPI, this boilerplate automates the process, transforming your FastAPI schema into a production-ready API config.
+- OAuth2 & API Keys  
+- Throttling & burst limits  
+- Response caching  
+- Custom domain names  
+- Hosted Swagger UI for each version
 
-⸻
+It **automatically transforms** the default OpenAPI schema from FastAPI by injecting AWS-specific extensions — no manual editing needed.
 
-✨ Features
-	•	🔐 Authentication & Authorization: OAuth2, API Keys, Usage Plans
-	•	🚦 Traffic Control: Fine-tuned throttling and burst limits
-	•	⚡ Response Caching: Reduce latency & boost performance
-	•	📚 Multi-Version Docs: Hosted Swagger UI for each version, branded and deployed on S3
-	•	🌐 Custom Domains: Easily configure subdomains per environment
+---
 
-⸻
+## ✨ Features
 
-🧰 Prerequisites
+- 🔐 **Auth & Usage Plans** – OAuth2, API Keys, Usage Plans  
+- 🚦 **Traffic Control** – Throttling and burst settings  
+- ⚡ **Response Caching** – Low latency, faster APIs  
+- 📚 **Multi-Version Docs** – Swagger UI hosted per version (on S3)  
+- 🌐 **Custom Domains** – Subdomain config per environment
 
-Make sure the following tools are installed:
-	•	Terraform
-	•	UV
-	•	Docker
-	•	Node.js
+---
 
-⸻
+## 🧰 Prerequisites
 
-⚙️ Quickstart — Deploy in < 5 min
+Install:
 
-1. 🔍 Explore Available Commands
+- [Terraform](https://developer.hashicorp.com/terraform)
+- [UV](https://docs.astral.sh/uv/getting-started/installation/)
+- [Docker](https://www.docker.com/)
+- [Node.js](https://nodejs.org/)
 
+---
+
+## ⚙️ Quickstart — Deploy in < 5 Minutes
+
+### 1. 🔍 List Available Commands
+
+```bash
 make help
+```
 
-All commands follow this structure: make <action>-<stage> (e.g. make deploy-dev).
+All commands follow this format: `make <command>-<stage>`  
+_Example_: `make deploy-dev`
 
-⸻
+---
 
-2. 📦 Install Python Dependencies
+### 2. 📦 Install Python Dependencies
 
+```bash
 uv venv .venv
 uv sync
+```
 
+---
 
+### 3. 🔧 Configure AWS
 
-⸻
+Edit `config.py`:
 
-3. 🔧 Configure AWS Access
-
-Edit config.py:
-
+```python
 "aws_region": "eu-west-3",
 "aws_accounts": {
     "dev": {
@@ -71,65 +82,113 @@ Edit config.py:
         "live": False
     },
 }
+```
 
-This allows domain differentiation:
+Custom domain behavior:
 
-Environment	API URL	Docs URL
-dev	api.dev.fastawsrestpi.com	doc.api.dev.fastawsrestpi.com
-prod	api.fastawsrestpi.com	doc.api.fastawsrestpi.com
+| Stage | API URL                       | Docs URL                          |
+|-------|-------------------------------|------------------------------------|
+| dev   | `api.dev.fastawsrestpi.com`   | `doc.api.dev.fastawsrestpi.com`   |
+| prod  | `api.fastawsrestpi.com`       | `doc.api.fastawsrestpi.com`       |
 
+---
 
+## 🛠️ Deployment Steps
 
-⸻
+### ✅ 1. Init Terraform
 
-🛠️ Deployment Steps
-
-✅ 1. Init Terraform
-
+```bash
 make tf-init-dev
+```
 
-Initializes Terraform, installs providers, and sets up the state folder.
-You can use any backend (S3, Terraform Cloud…) by editing version.tf.
+> Initializes Terraform, downloads providers, sets up local state.  
+> You can configure any backend (S3, Terraform Cloud...) in `version.tf`.
 
-⸻
+---
 
-🧪 2. Create the ECR Repository
+### 🧪 2. Create the ECR Repository
 
+```bash
 make tf-ecr-dev
+```
 
-Creates only the aws_ecr_repository used by the Lambda Docker image.
+> Creates an AWS ECR repository for the Lambda Docker image.
 
-⸻
+---
 
-🐳 3. Build & Push Lambda Docker Image
+### 🐳 3. Build & Push Lambda Image
 
+```bash
 make build-push-lambda-image-dev
+```
 
-Uses the provided Dockerfile to build your API image and push to ECR.
-Includes lifecycle policy to clean up untagged images.
+> Builds and pushes your FastAPI Docker image to ECR.  
+Includes lifecycle policy to remove untagged images.
 
-⸻
+---
 
-📄 4. Generate OpenAPI Files
+### 📄 4. Generate OpenAPI Files
 
+```bash
 make generate-openapi-files-dev
+```
 
-For each version (src/api/versions/v1/), two files are generated:
+Generates two files per API version:
 
-	•	openapi-v1-terraform.json (for AWS Gateway)
-	•	openapi-v1-swagger.json (for Swagger UI)
+- `openapi-v1-terraform.json` → used by AWS Gateway  
+- `openapi-v1-swagger.json` → used for Swagger UI on S3
 
-⸻
+---
 
-🚀 5. Deploy Everything
+### 🚀 5. Full Deployment
 
+```bash
 make deploy-dev
+```
 
-Performs all steps:
+> Runs:
+- Docker build + push  
+- Terraform apply  
+- Swagger docs upload to S3
 
-	•	Build + push Lambda image
-	•	Apply Terraform
-	•	Upload Swagger UI docs to S3
+---
 
-⸻
+## 📁 Project Structure
 
+```txt
+.
+├── src/
+│   └── api/
+│       ├── doc/                  # Swagger UI assets
+│       └── versions/
+│           └── v1/              # API code per version
+├── .infra/
+│   └── terraform/               # Terraform (Gateway, Lambda, S3, etc.)
+├── config.py                    # Stage/account settings
+├── Makefile                     # Automation commands
+└── README.md
+```
+
+---
+
+## 🧪 Example Make Commands
+
+```bash
+make tf-init-dev
+make tf-ecr-dev
+make build-push-lambda-image-dev
+make generate-openapi-files-dev
+make deploy-dev
+```
+
+---
+
+## 🧑‍💻 Contributing
+
+Open issues or PRs — feedback is welcome!
+
+---
+
+## 📜 License
+
+MIT License
