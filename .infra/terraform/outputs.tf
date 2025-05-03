@@ -5,9 +5,12 @@ output "cognito_user_pool_domain_url" {
 output "api_gateway_urls" {
   description = "Map des URLs de l'API Gateway pour chaque version"
   value = {
-    for version, api in module.api_rest : version => api.api_gateway_rest_domain
+    for version, api in module.api_rest : version => { raw : api.api_gateway_rest_domain,
+      custom : "https://${local.api_domain_name}/${version}"
+    }
   }
 }
+
 
 output "api_documentation_bucket_name" {
   value = module.this.bucket_name
