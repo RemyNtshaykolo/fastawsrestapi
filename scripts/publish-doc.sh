@@ -5,6 +5,7 @@ bucket_name=$(jq -r .api_documentation_bucket_name.value .infra/terraform/$STAGE
 
 echo "📦 Pushing swagger-ui documentation to s3://${bucket_name}/swagger-ui"
 
+
 aws s3 sync .swagger-ui s3://${bucket_name}
 aws s3 cp src/api/doc/icon.png s3://${bucket_name}/icon.png
 
