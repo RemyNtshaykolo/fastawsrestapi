@@ -187,3 +187,65 @@ make publish-doc-dev
 ### 7. Test the api documentation
 
 https://github.com/user-attachments/assets/cfb0dd69-28fe-4dd6-a279-7e91484f69f6
+
+
+### 8. Use your custom domain name for your api
+
+First make sure you have access to the dns record of your domain name.
+
+Then in the config.py set the `use_custom_domain_name` to true and set `domain_name` to your domain name.
+
+```python
+"networking": {
+        "domain_name": "fastawsrestapi.com", # Set your domain name here
+        "use_custom_domain": True,  # Set this field to True
+},
+```
+
+
+> You can execute the `make tf-apply-dev` command, but be prepared for it to initially fail. This is because it attempts to create a certificate for the custom domain name.
+>
+> For Amazon to verify domain ownership, you must add a temporary CNAME record to your DNS settings.
+><p align="center">
+><img src="docs-site/expeceted_custom_domain_name_error.png" alt="expected_custom_domain_name_error" width="1000" />
+></p>
+> As mentioned earlier, you need to prove to AWS that you own the domain name.
+>
+> <p><strong style="font-size: larger;">Select the N. Virginia (us-east-1) region in your AWS account. Even if you specified a different <code>aws_region</code> in the config.py, certificates for EDGE APIs and CloudFront distributions must be created in the us-east-1 region.</strong></p>
+>
+> Then, navigate to the AWS Certificate Manager service, where you should see an ACM certificate registered for the domain name
+>
+> api.dev.yourdomainname.com, pending validation.
+><p align="center">
+><img src="docs-site/pending_validation_certificate.png" alt="pending_validation_certificate" width="1000" />
+></p>
+>
+> To validate, click on the certificate ID and retrieve the CNAME name and CNAME value.
+><p align="center">
+><img src="docs-site/pending_validatation_certificate_CNAME.png" alt="pending_validation_certificate_CNAME" width="1000" />
+></p>
+>
+> Go to your domain name provider's settings (such as Ionos, GoDaddy, Gandi, Route53, etc.) and register a new CNAME record with these values.
+>
+> In this demonstration, an example is provided for Route53. Go to the hosted zone.
+><p align="center">
+><img src="docs-site/hosted_zone.png" alt="hosted_zone" width="1000" />
+></p>
+> Click on "Create a new record" and select the simple routing policy.
+> 
+> Then click on "Define simple record."
+> 
+> Select the CNAME record type and add the CNAME record value from the ACM certificate manager.
+> ⚠️ Depending on your domain provider, you might need to trim the end of the CNAME name.
+>
+> Example: _36acjkmlkfesslea0b889e4b4cfc96cdb91.api.dev.fastawsrestapi.com. => _36acjkmlkfesslea0b889e4b4cfc96cdb91.api.dev
+> 
+><p align="center">
+><img src="docs-site/cname_record.png" alt="cname_record" width="1000" />
+></p>
+>
+> Then click on "Define simple record" and then "Create records."
+>
+> You will need to wait for the DNS to propagate. Once it is complete, the status of your certificate should change from "Pending validation" to "Validated."
+> This usually takes around 5 minutes.
+> 
