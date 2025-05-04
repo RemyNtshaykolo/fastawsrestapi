@@ -57,3 +57,15 @@ variable "use_custom_domain" {
   type        = bool
   default     = false
 }
+
+variable "use_custom_domain_for_documentation" {
+  description = "Use custom domain for the documentation"
+  type        = bool
+  default     = false
+}
+
+variable "live_environment" {
+  description = "Live environment"
+  type        = bool
+  default     = false
+}

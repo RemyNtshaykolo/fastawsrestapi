@@ -9,18 +9,28 @@ variable "app_name" {
   description = "Name of static app"
 }
 
-variable "doc_domain_name" {
+variable "domain_name" {
   type        = string
-  description = "Domain name of the documentation website"
-  default     = null
+  description = "Domain name of the website to be used"
 }
 
+variable "description" {
+  type        = string
+  description = "Description of the website"
+}
 
 variable "default_tags" {
-  description = "Tags par défaut à appliquer à toutes les ressources"
+  description = "Default tags to be applied to all resources"
   type        = map(string)
   default     = {}
 }
+
+variable "use_custom_domain" {
+  type        = bool
+  description = "Whether to use a custom domain name"
+  default     = false
+}
+
 
 
 

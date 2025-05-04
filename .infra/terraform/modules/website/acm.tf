@@ -1,7 +1,7 @@
 resource "aws_acm_certificate" "certificate" {
-  count             = var.doc_domain_name != null ? 1 : 0
+  count             = var.use_custom_domain ? 1 : 0
   provider          = aws.acm_provider
-  domain_name       = var.doc_domain_name
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   tags = merge(

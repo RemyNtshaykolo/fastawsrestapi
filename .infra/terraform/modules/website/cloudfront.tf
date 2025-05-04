@@ -1,10 +1,10 @@
 resource "aws_cloudfront_distribution" "this" {
-  count               = var.doc_domain_name != null ? 1 : 0
+  count               = var.use_custom_domain ? 1 : 0
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "The cloudfront distribution for bluepulse demo"
+  comment             = var.description
   default_root_object = "index.html"
-  aliases             = ["${var.doc_domain_name}"]
+  aliases             = ["${var.domain_name}"]
   default_cache_behavior {
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]

@@ -3,5 +3,5 @@ output "bucket_name" {
 }
 
 output "cloudfront_distribution_id" {
-  value = var.doc_domain_name != null ? aws_cloudfront_distribution.this[0].id : null
+  value = var.use_custom_domain ? aws_cloudfront_distribution.this[0].id : null
 }
