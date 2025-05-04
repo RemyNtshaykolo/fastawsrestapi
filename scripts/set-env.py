@@ -33,7 +33,9 @@ def main(stage):
     aws_region = CONFIG["aws_region"]
     domain_name = CONFIG["networking"]["domain_name"]
     use_custom_domain = CONFIG["networking"]["use_custom_domain"]
-    use_custom_domain_for_documentation = CONFIG["networking"]["use_custom_domain_for_documentation"]
+    use_custom_domain_for_documentation = CONFIG["networking"][
+        "use_custom_domain_for_documentation"
+    ]
     live_environment = aws_account["live"]
     oauth2_clients = CONFIG["authentication"]["oauth2_clients"]
     usage_plans = CONFIG["authentication"]["usage_plans"]
@@ -55,7 +57,9 @@ def main(stage):
         "PYTHONPATH": f"src",
         "API_TITLE": api_title,
         "LIVE_ENVIRONMENT": "true" if live_environment else "false",
-        "USE_CUSTOM_DOMAIN_FOR_DOCUMENTATION": "true" if use_custom_domain_for_documentation else "false",
+        "USE_CUSTOM_DOMAIN_FOR_DOCUMENTATION": (
+            "true" if use_custom_domain_for_documentation else "false"
+        ),
     }
 
     # Export to Python process environment

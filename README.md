@@ -188,7 +188,6 @@ make publish-doc-dev
 
 https://github.com/user-attachments/assets/cfb0dd69-28fe-4dd6-a279-7e91484f69f6
 
-
 ### 8. Use your custom domain name for your api
 
 First make sure you have access to the dns record of your domain name.
@@ -202,13 +201,13 @@ Then in the config.py set the `use_custom_domain_name` to true and set `domain_n
 },
 ```
 
-
 > You can execute the `make tf-apply-dev` command, but be prepared for it to initially fail. This is because it attempts to create a certificate for the custom domain name.
 >
 > For Amazon to verify domain ownership, you must add a temporary CNAME record to your DNS settings.
-><p align="center">
-><img src="docs-site/expeceted_custom_domain_name_error.png" alt="expected_custom_domain_name_error" width="1000" />
-></p>
+>
+> <p align="center">
+> <img src="docs-site/expeceted_custom_domain_name_error.png" alt="expected_custom_domain_name_error" width="1000" />
+> </p>
 > As mentioned earlier, you need to prove to AWS that you own the domain name.
 >
 > <p><strong style="font-size: larger;">Select the N. Virginia (us-east-1) region in your AWS account. Even if you specified a different <code>aws_region</code> in the config.py, certificates for EDGE APIs and CloudFront distributions must be created in the us-east-1 region.</strong></p>
@@ -216,36 +215,70 @@ Then in the config.py set the `use_custom_domain_name` to true and set `domain_n
 > Then, navigate to the AWS Certificate Manager service, where you should see an ACM certificate registered for the domain name
 >
 > api.dev.yourdomainname.com, pending validation.
-><p align="center">
-><img src="docs-site/pending_validation_certificate.png" alt="pending_validation_certificate" width="1000" />
-></p>
+>
+> <p align="center">
+> <img src="docs-site/pending_validation_certificate.png" alt="pending_validation_certificate" width="1000" />
+> </p>
 >
 > To validate, click on the certificate ID and retrieve the CNAME name and CNAME value.
-><p align="center">
-><img src="docs-site/pending_validatation_certificate_CNAME.png" alt="pending_validation_certificate_CNAME" width="1000" />
-></p>
+>
+> <p align="center">
+> <img src="docs-site/pending_validatation_certificate_CNAME.png" alt="pending_validation_certificate_CNAME" width="1000" />
+> </p>
 >
 > Go to your domain name provider's settings (such as Ionos, GoDaddy, Gandi, Route53, etc.) and register a new CNAME record with these values.
 >
-> In this demonstration, an example is provided for Route53. Go to the hosted zone.
-><p align="center">
-><img src="docs-site/hosted_zone.png" alt="hosted_zone" width="1000" />
-></p>
-> Click on "Create a new record" and select the simple routing policy.
-> 
-> Then click on "Define simple record."
-> 
-> Select the CNAME record type and add the CNAME record value from the ACM certificate manager.
-> ⚠️ Depending on your domain provider, you might need to trim the end of the CNAME name.
+> In this demonstration, we provide an example using Route53. Navigate to the hosted zone.
 >
-> Example: _36acjkmlkfesslea0b889e4b4cfc96cdb91.api.dev.fastawsrestapi.com. => _36acjkmlkfesslea0b889e4b4cfc96cdb91.api.dev
-> 
-><p align="center">
-><img src="docs-site/cname_record.png" alt="cname_record" width="1000" />
-></p>
+> <p align="center">
+> <img src="docs-site/hosted_zone.png" alt="hosted_zone" width="1000" />
+> </p>
+> Click on "Create a new record" and choose the simple routing policy.
+>
+> Next, click on "Define simple record."
+>
+> Select the CNAME record type and enter the CNAME record value from the ACM certificate manager.
+> ⚠️ Depending on your domain provider, you may need to trim the end of the CNAME name.
+>
+> Example: \_36acjkmlkfesslea0b889e4b4cfc96cdb91.api.dev.fastawsrestapi.com. => \_36acjkmlkfesslea0b889e4b4cfc96cdb91.api.dev
+>
+> <p align="center">
+> <img src="docs-site/cname_record.png" alt="cname_record" width="1000" />
+> </p>
 >
 > Then click on "Define simple record" and then "Create records."
 >
-> You will need to wait for the DNS to propagate. Once it is complete, the status of your certificate should change from "Pending validation" to "Validated."
-> This usually takes around 5 minutes.
-> 
+> You will need to wait for the DNS to propagate. Once complete, the status of your certificate should change from "Pending validation" to "Validated."
+> This process typically takes about 5 minutes, but it can sometimes take longer.
+>
+> Once your certificate is validated, its status should appear as "Issued."
+>
+> <p align="center">
+> <img src="docs-site/issued.png" alt="issued" width="1000" />
+> </p>
+> You can rerun the `make tf-apply-dev` command. (If it fails, you might want to retry it once.)
+>
+> After this, you should create a CNAME between the AWS custom domain name that has been created.
+>
+> To do this, go to the API Gateway service (ensure you select the region specified in the config.py) and click on "Custom domain names."
+> Your newly created domain name should appear as follows:
+>
+> <p align="center">
+> <img src="docs-site/custom_domain_name.png" alt="custom_domain_name" width="1000" />
+> </p>
+>
+> Return to your domain provider's DNS Records and create a new CNAME record.
+>
+> The CNAME Name should be `api.dev` and the CNAME value should be the API Gateway domain name found on your custom domain name page info.
+>
+> <p align="center">
+> <img src="docs-site/custom_domain_name_info.png" alt="custom_domain_name_info" width="1000" />
+> </p>
+>
+> Wait for the CNAME to propagate. You can use the tool https://dnschecker.org/#CNAME/ to check if the DNS propagation is complete (in my exemple I check for api.dev.fastawsrestapi.com)
+>
+> Now that you have registered this new domain name, you want it to appear and be used in your documentation.
+>
+> To do this, you can run the command `make doc` (it launches under the hood `make generate-openapi-files-dev, make upload-openapi-files-to-s3-dev, make build-swagger-ui-dev, and make publish-doc-dev`).
+>
+> When `make generate-openapi-files-dev` is launched, it checks the environment variable `USE_CUSTOM_DOMAIN`. If it is true, it injects the custom domain name into the servers section of your OpenAPI files.
