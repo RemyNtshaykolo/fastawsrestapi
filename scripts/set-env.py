@@ -54,7 +54,7 @@ def main(stage):
         "USE_CUSTOM_DOMAIN": "true" if use_custom_domain else "false",
         "APP_NAME": app_name,
         "TF_WORKSPACE": stage,
-        "PYTHONPATH": f"src",
+        "PYTHONPATH": "src",
         "API_TITLE": api_title,
         "LIVE_ENVIRONMENT": "true" if live_environment else "false",
         "USE_CUSTOM_DOMAIN_FOR_DOCUMENTATION": (
@@ -73,6 +73,7 @@ def main(stage):
             for line in f:
                 if line.strip() and not line.startswith("#"):
                     k, v = line.strip().split("=", 1)
+                    v = v.strip('"').strip("'")  # Remove any surrounding quotes
                     existing_vars[k] = v
 
     # Update only the variables defined by this script
