@@ -69,7 +69,7 @@ def upload_openapi_schema(version, openapi_schema, bucket, aws_region):
     """
     s3_key = f"openapi-{version}.json"
     s3 = boto3.client("s3")
-    url = f"http://{bucket}.s3.{aws_region}.amazonaws.com/{s3_key}"
+    url = f"https://s3.{aws_region}.amazonaws.com/{bucket}/{s3_key}"
     try:
         s3.put_object(Bucket=bucket, Key=s3_key, Body=json.dumps(openapi_schema))
         print(f"Openapi schema uploaded to {url}")
